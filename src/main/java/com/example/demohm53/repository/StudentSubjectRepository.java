@@ -15,7 +15,7 @@ public interface StudentSubjectRepository extends JpaRepository<StudentSubject, 
 
     Page<StudentSubject> findAll(Pageable pageable);
 
-    @Query(value = "select s.id, s.name, s.description, ss.status " +
+    @Query(value = "select s.id, s.name, s.description, ss.status, ss.id " +
             "from subjects s " +
             "inner join student_subject ss on s.id = ss.subject_id " +
             "inner join students stu on ss.student_id = stu.id " +

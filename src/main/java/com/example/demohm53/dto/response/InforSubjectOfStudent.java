@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class InforSubjectOfStudent {
+    private Integer studentSubjectId;
     private Integer subjectId;
     private String subjectName;
     private String subjectDescription;

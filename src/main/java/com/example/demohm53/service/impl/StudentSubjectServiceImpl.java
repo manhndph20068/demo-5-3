@@ -97,6 +97,7 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
                         .subjectName((String) result[1])
                         .subjectDescription((String) result[2])
                         .statusSubject((Integer) result[3])
+                        .studentSubjectId((Integer) result[4])
                         .build())
                 .collect(Collectors.toList());
 
