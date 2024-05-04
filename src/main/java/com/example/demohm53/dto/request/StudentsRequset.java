@@ -20,17 +20,17 @@ public class StudentsRequset {
 
     private Integer id;
 
-//    @NotBlank(message = "FullName is required")
-//    @NotNull(message = "FullName is NotNull")
+    @NotBlank(message = "FullName is required")
+    @NotNull(message = "FullName is NotNull")
     private String fullName;
 
-//    @Min(value = 1, message = "age must be greater than 1")
-//    @NotBlank(message = "age is required")
-//    @NotNull(message = "age is NotNull")
+    @Min(value = 1, message = "age must be greater than 1")
+    @NotBlank(message = "age is required")
+    @NotNull(message = "age is NotNull")
     private Integer age;
 
-//    @NotBlank(message = "Gender is required")
-//    @NotNull(message = "Gender is NotNull")
+    @NotBlank(message = "Gender is required")
+    @NotNull(message = "Gender is NotNull")
     private Integer gender;
 
     private Integer status;

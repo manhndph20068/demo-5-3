@@ -41,26 +41,36 @@ public class StudentsController {
     @PostMapping("/addNewStudent")
     public ResponseEntity<?> addNewStudent(@Valid @RequestBody StudentsRequset studentsRequset,
                                            BindingResult result) {
-        if (result.hasErrors()) {
-            List<String> errorMessages = result.getFieldErrors()
-                    .stream()
-                    .map(fieldError -> fieldError.getDefaultMessage())
-                    .collect(Collectors.toList());
-            String errorMessage = String.join(", ", errorMessages);
+        try {
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(fieldError -> fieldError.getDefaultMessage())
+                        .collect(Collectors.toList());
+                String errorMessage = String.join(", ", errorMessages);
+                return ResponseEntity.badRequest().body(new ServiceResult(
+                                AppConstant.BAD_REQUEST,
+                                errorMessage,
+                                null
+                        )
+                );
+            } else {
+                Students students = studentsService.addNew(studentsRequset);
+                return ResponseEntity.ok().body(new ServiceResult(
+                                AppConstant.SUCCESS,
+                                "success",
+                                students
+                        )
+                );
+            }
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ServiceResult(
                             AppConstant.BAD_REQUEST,
-                            errorMessage,
-                            studentsService.getListStudents()
+                            e.getMessage(),
+                            null
                     )
             );
-        } else {
-            Students students = studentsService.addNew(studentsRequset);
-            return ResponseEntity.ok().body(new ServiceResult(
-                            AppConstant.SUCCESS,
-                            "success",
-                            students
-                    )
-            );
+
         }
     }
 
@@ -78,7 +88,7 @@ public class StudentsController {
             return ResponseEntity.ok().body(new ServiceResult(
                             AppConstant.SUCCESS,
                             e.getMessage(),
-                           null
+                            null
                     )
             );
         }

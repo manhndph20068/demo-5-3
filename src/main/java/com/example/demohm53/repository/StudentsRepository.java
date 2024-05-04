@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface StudentsRepository extends JpaRepository<Students, Integer> {
 
-    @Query(value = "SELECT s.id, s.full_name " +
+    @Query(value = "SELECT s.id, s.full_name, ss.status " +
             "FROM students s " +
             "INNER JOIN student_subject ss ON s.id = ss.student_id " +
             "INNER JOIN subjects sub ON ss.subject_id = sub.id " +

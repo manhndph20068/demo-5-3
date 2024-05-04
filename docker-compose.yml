@@ -1,0 +1,45 @@
+version: "3"
+services:
+
+  mysqldb:
+    container_name: db_container
+    image: mysql
+    ports:
+       - "3307:3306"
+#    expose:
+#      - "3306"
+    environment:
+      MYSQL_DATABASE: manage_students
+      MYSQL_ROOT_PASSWORD: 12345678
+    command: --init-file /docker-entrypoint-initdb.d/Dump20240504.sql
+    volumes:
+      - D:/java5-sof3021/demo-hm5-3/Dump20240504.sql:/docker-entrypoint-initdb.d/Dump20240504.sql
+    networks:
+      - network_mysql
+
+
+  springboot-app:
+    depends_on:
+      - mysqldb
+    restart: unless-stopped
+    container_name: spring_container
+    image: manage_student_spring_image
+    build: .
+    ports:
+      - "8080:8080"
+#    expose:
+#      - "8080"
+    environment:
+      MYSQL_HOST: db_container
+      MYSQL_PORT: 3306
+      MYSQL_DB_NAME: manage_students
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+    links:
+      - mysqldb
+    networks:
+      - network_mysql
+
+networks:
+  network_mysql:
+    driver: bridge

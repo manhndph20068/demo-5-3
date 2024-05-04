@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class StudentSubjectRequest {
+    private Integer id;
     private Integer studentId;
     private Integer subjectId;
     private String fullNameOfStudent;

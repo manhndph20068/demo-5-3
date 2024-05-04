@@ -1,6 +1,8 @@
 package com.example.demohm53.service.impl;
 
 import com.example.demohm53.dto.request.StudentSubjectRequest;
+import com.example.demohm53.dto.response.InforStudentSubject;
+import com.example.demohm53.dto.response.InforSubjectOfStudent;
 import com.example.demohm53.dto.response.StudentOfSubjectResponse;
 import com.example.demohm53.dto.response.StudentSubjectResponse;
 import com.example.demohm53.dto.response.SubjectOfStutentResponse;
@@ -57,6 +59,14 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
         Subjects subjects = subjectsRepository.findById(studentSubjectRequest.getSubjectId())
                 .orElseThrow(() -> new DataNotFoundException("Not found subject id: " + studentSubjectRequest.getSubjectId()));
 
+        if (studentSubjectRepository.countByStudentIdAndSubjectId(students.getId(), subjects.getId()) > 0) {
+            throw new RuntimeException("Student has been added to this subject");
+        }
+
+        if (students.getStatus() == 1 || subjects.getStatus() == 1) {
+            throw new RuntimeException("Student or Subject has been deleted");
+        }
+
         StudentSubject studentSubject = StudentSubject.builder()
                 .students(students)
                 .subjects(subjects)
@@ -66,22 +76,34 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
     }
 
     @Override
+    public StudentSubject completeSubject(StudentSubjectRequest studentSubjectRequest) throws Exception {
+        StudentSubject studentSubject = studentSubjectRepository.findById(studentSubjectRequest.getId())
+                .orElseThrow(() -> new DataNotFoundException("Not found studentSubject id: " + studentSubjectRequest.getStudentId()));
+
+        studentSubject.setStatus(1);
+        return studentSubjectRepository.save(studentSubject);
+    }
+
+    @Override
     public SubjectOfStutentResponse findSubjectOfStutentResponse(StudentSubjectRequest studentSubjectRequest) throws Exception {
         Students students = studentsRepository.findById(studentSubjectRequest.getStudentId())
                 .orElseThrow(() -> new DataNotFoundException("Not found student id: " + studentSubjectRequest.getStudentId()));
 
         List<Object[]> listResult = studentSubjectRepository.findSubjectsByStudentId(students.getId());
-        List<Subjects> subjectsList = listResult.stream()
-                .map(result -> Subjects.builder()
-                        .id((Integer) result[0])
-                        .name((String) result[1])
-                        .description((String) result[2])
+
+        List<InforSubjectOfStudent> subjectsList = listResult.stream()
+                .map(result -> InforSubjectOfStudent.builder()
+                        .subjectId((Integer) result[0])
+                        .subjectName((String) result[1])
+                        .subjectDescription((String) result[2])
+                        .statusSubject((Integer) result[3])
                         .build())
                 .collect(Collectors.toList());
 
         SubjectOfStutentResponse subjectOfStutentResponse = SubjectOfStutentResponse.builder()
                 .studentId(studentSubjectRequest.getStudentId())
                 .subjectsList(subjectsList)
+                .totalSubject(studentSubjectRepository.getTotalSubjectsByStudentId(students.getId()))
                 .build();
         return subjectOfStutentResponse;
     }
@@ -94,10 +116,11 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
         List<Object[]> listResult = studentSubjectRepository.findSubjectsInforAndTotalCountStudentId(subjects.getId());
 
         List<Object[]> listStudentsBySubjectId = studentsRepository.findStudentsBySubjectId(studentSubjectRequest.getSubjectId());
-        List<Students> studentsList = listStudentsBySubjectId.stream()
-                .map(result -> Students.builder()
+        List<InforStudentSubject> studentsList = listStudentsBySubjectId.stream()
+                .map(result -> InforStudentSubject.builder()
                         .id((Integer) result[0])
                         .fullName((String) result[1])
+                        .statusSubject((Integer) result[2])
                         .build())
                 .collect(Collectors.toList());
 

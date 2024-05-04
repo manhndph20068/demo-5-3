@@ -111,4 +111,27 @@ public class StudentSubjectController {
                     );
         }
     }
+
+    @PostMapping("/doComplateSubject")
+    public ResponseEntity<?> doComplateSubject(@RequestBody StudentSubjectRequest studentSubjectRequest) {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ServiceResult<>(
+                                    AppConstant.SUCCESS,
+                                    "doComplateSubject success",
+                                    studentSubjectService.completeSubject(studentSubjectRequest)
+                            )
+                    );
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ServiceResult<>(
+                                    AppConstant.ERROR,
+                                    e.getMessage(),
+                                    null
+                            )
+                    );
+        }
+    }
 }

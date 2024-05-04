@@ -42,7 +42,7 @@ public class SubjectsController {
         );
     }
 
-    @PostMapping("/updateStudent")
+    @PostMapping("/updateSubject")
     public ResponseEntity<?> updateSubject(@RequestBody SubjectRequest subjectRequest) {
         try {
             return ResponseEntity.ok().body(new ServiceResult(
@@ -61,7 +61,7 @@ public class SubjectsController {
         }
     }
 
-    @PostMapping("/deleteStudent")
+    @PostMapping("/deleteSubject")
     public ResponseEntity<?> deleteSubject(@RequestBody SubjectRequest subjectRequest) {
         try {
             return ResponseEntity.ok().body(new ServiceResult(

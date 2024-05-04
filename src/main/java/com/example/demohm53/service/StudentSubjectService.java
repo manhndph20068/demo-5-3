@@ -17,6 +17,8 @@ public interface StudentSubjectService {
 
     StudentSubject addStudentToSubject(StudentSubjectRequest studentSubjectRequest) throws Exception;
 
+    StudentSubject completeSubject(StudentSubjectRequest studentSubjectRequest) throws Exception;
+
     SubjectOfStutentResponse findSubjectOfStutentResponse(StudentSubjectRequest studentSubjectRequest) throws Exception;
 
     StudentOfSubjectResponse findStudentOfSubjectResponse(StudentSubjectRequest studentSubjectRequest) throws Exception;

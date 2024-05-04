@@ -1,6 +1,5 @@
 package com.example.demohm53.dto.response;
 
-import com.example.demohm53.entity.Students;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StudentOfSubjectResponse {
+public class InforSubjectOfStudent {
     private Integer subjectId;
     private String subjectName;
-    private Integer totalStudent;
-    private List<InforStudentSubject> studentsList;
+    private String subjectDescription;
+    private Integer statusSubject;
 }
