@@ -137,6 +137,7 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
 
     private StudentSubjectResponse convertToStudentSubjectResponse(StudentSubject studentSubject) {
         return StudentSubjectResponse.builder()
+                .id(studentSubject.getId())
                 .fullNameOfStudent(studentSubject.getStudents().getFullName())
                 .age(studentSubject.getStudents().getAge())
                 .gender(studentSubject.getStudents().getGender())

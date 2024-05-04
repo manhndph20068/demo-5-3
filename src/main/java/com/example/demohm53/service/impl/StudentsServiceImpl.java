@@ -59,6 +59,7 @@ public class StudentsServiceImpl implements StudentsService {
 
     private StudentsResponse convertToRes(Students students){
             return StudentsResponse.builder()
+                    .id(students.getId())
                     .fullName(students.getFullName())
                     .age(students.getAge())
                     .gender(students.getGender())
